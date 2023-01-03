@@ -6,6 +6,7 @@ import ReactFlow, {
   OnConnectStart,
   useReactFlow,
   useStoreApi,
+  Controls,
 } from 'reactflow';
 import shallow from 'zustand/shallow';
 
@@ -93,7 +94,9 @@ function Flow() {
       connectionLineStyle={connectionLineStyle}
       connectionLineType={ConnectionLineType.Straight}
       fitView
-    />
+    >
+      <Controls showInteractive={false} />
+    </ReactFlow>
   );
 }
 

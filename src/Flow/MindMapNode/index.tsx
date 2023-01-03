@@ -15,7 +15,7 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
 
   useLayoutEffect(() => {
     setTimeout(() => {
-      inputRef.current?.focus();
+      inputRef.current?.focus({ preventScroll: true });
     }, 0);
   }, []);
 
@@ -27,7 +27,6 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
 
   return (
     <>
-      <Handle type="target" position={Position.Top} />
       <div className={style.inputWrapper}>
         <div className={style.dragHandle}>
           <svg viewBox="0 0 24 24">
@@ -42,10 +41,12 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
         <input
           defaultValue={data.label}
           onChange={(evt) => updateNodeLabel(id, evt.target.value)}
-          className={`${style.input}`}
+          className={style.input}
           ref={inputRef}
         />
       </div>
+
+      <Handle type="target" position={Position.Top} />
       <Handle type="source" position={Position.Top} />
     </>
   );
