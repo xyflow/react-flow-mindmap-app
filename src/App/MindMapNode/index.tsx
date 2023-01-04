@@ -1,10 +1,9 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import cc from 'classcat';
 
-import useStore from '../../store';
+import useStore from '../store';
 
-import style from './style.module.css';
 import DragIcon from './DragIcon';
 
 export type NodeData = {
@@ -16,10 +15,10 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const updateNodeLabel = useStore((state) => state.updateNodeLabel);
 
-  useLayoutEffect(() => {
-    setTimeout(() => {
-      inputRef.current?.focus({ preventScroll: true });
-    }, 0);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus({ preventScroll: true });
+    }
   }, []);
 
   useLayoutEffect(() => {
@@ -30,13 +29,8 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
 
   return (
     <>
-      <div
-        className={cc([
-          style.inputWrapper,
-          { [style.inputFocused]: inputFocused },
-        ])}
-      >
-        <div className={style.dragHandle}>
+      <div className={cc(['inputWrapper', { inputFocused: inputFocused }])}>
+        <div className="dragHandle">
           <DragIcon />
         </div>
         <input
@@ -44,7 +38,7 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
           onChange={(evt) => updateNodeLabel(id, evt.target.value)}
           onFocus={() => setInputFocused(true)}
           onBlur={() => setInputFocused(false)}
-          className={style.input}
+          className="input"
           ref={inputRef}
         />
       </div>

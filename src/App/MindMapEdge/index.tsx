@@ -1,6 +1,6 @@
 import { BaseEdge, EdgeProps, getStraightPath } from 'reactflow';
 
-export default function CustomEdge(props: EdgeProps) {
+function MindMapEdge(props: EdgeProps) {
   const { sourceX, sourceY, targetX, targetY } = props;
 
   const [edgePath] = getStraightPath({
@@ -12,3 +12,5 @@ export default function CustomEdge(props: EdgeProps) {
 
   return <BaseEdge path={edgePath} {...props} />;
 }
+
+export default MindMapEdge;

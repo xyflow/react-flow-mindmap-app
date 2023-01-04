@@ -7,10 +7,11 @@ import ReactFlow, {
   useReactFlow,
   useStoreApi,
   Controls,
+  Panel,
 } from 'reactflow';
 import shallow from 'zustand/shallow';
 
-import useStore, { RFState } from '../store';
+import useStore, { RFState } from './store';
 import MindMapNode from './MindMapNode';
 import MindMapEdge from './MindMapEdge';
 
@@ -21,13 +22,13 @@ const selector = (state: RFState) => ({
   edges: state.edges,
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
-  onConnect: state.onConnect,
   addChildNode: state.addChildNode,
 });
 
 const nodeTypes = {
   mindmap: MindMapNode,
 };
+
 const edgeTypes = {
   mindmap: MindMapEdge,
 };
@@ -39,14 +40,10 @@ const defaultEdgeOptions = { style: connectionLineStyle, type: 'mindmap' };
 
 function Flow() {
   const store = useStoreApi();
-  const {
-    nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
-    addChildNode,
-  } = useStore(selector, shallow);
+  const { nodes, edges, onNodesChange, onEdgesChange, addChildNode } = useStore(
+    selector,
+    shallow
+  );
   const { project } = useReactFlow();
   const connectingNodeId = useRef<string | null>(null);
 
@@ -92,7 +89,6 @@ function Flow() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnectStart={onConnectStart}
-      onConnect={onConnect}
       onConnectEnd={onConnectEnd}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
@@ -103,6 +99,9 @@ function Flow() {
       fitView
     >
       <Controls showInteractive={false} />
+      <Panel position="top-left" className="header">
+        React Flow Mind Map
+      </Panel>
     </ReactFlow>
   );
 }

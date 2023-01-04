@@ -1,27 +1,84 @@
-:root {
+body {
+  margin: 0;
+  background-color: #f8f8f8;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: #222
-  background-color: #333;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-  background-color: #f8f8f8;
 }
 
 html,
 body,
 #root {
   height: 100%;
+}
+
+.header {
+  color: #cdcdcd;
+}
+
+.react-flow__node-mindmap {
+  background: white;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  padding: 2px 5px;
+  font-weight: 700;
+}
+
+.react-flow__handle.target {
+  top: 50%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.react-flow__handle.source {
+  top: -20%;
+  background: #f6ad55;
+  height: 140%;
+  width: 105%;
+  border-radius: 2px;
+  z-index: 9;
+  border: none;
+}
+
+.react-flow .react-flow__connectionline {
+  z-index: 0;
+}
+
+.inputWrapper {
+  display: flex;
+  height: 20px;
+  z-index: 10;
+  position: relative;
+  pointer-events: none;
+}
+
+.inputWrapper.inputFocused {
+  pointer-events: all;
+}
+
+.dragHandle {
+  background: transparent;
+  width: 14px;
+  height: 100%;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  pointer-events: all;
+}
+
+.input {
+  border: none;
+  padding: 0 2px;
+  border-radius: 1px;
+  font-weight: 700;
+  background: transparent;
+  height: 100%;
+  color: #222;
+}
+
+.input:focus {
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
 }

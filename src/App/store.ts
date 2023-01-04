@@ -1,30 +1,23 @@
 import {
-  Connection,
   Edge,
   EdgeChange,
   Node,
   NodeChange,
-  addEdge,
   OnNodesChange,
   OnEdgesChange,
-  OnConnect,
   applyNodeChanges,
   applyEdgeChanges,
   XYPosition,
 } from 'reactflow';
 import create from 'zustand';
-import { nanoid } from 'nanoid/non-secure';
 
-import { NodeData } from '../Flow/MindMapNode';
-
-import style from '../Flow/MindMapNode/style.module.css';
+import { NodeData } from './MindMapNode';
 
 export type RFState = {
   nodes: Node<NodeData>[];
   edges: Edge[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
-  onConnect: OnConnect;
   updateNodeLabel: (nodeId: string, label: string) => void;
   addChildNode: (parentNode: Node | null, position: XYPosition) => void;
 };
@@ -34,9 +27,9 @@ const useStore = create<RFState>((set, get) => ({
     {
       id: 'root',
       type: 'mindmap',
-      data: { label: 'React Flow Mindmap 1' },
+      data: { label: 'React Flow Mind Map' },
       position: { x: 0, y: 0 },
-      dragHandle: `.${style.dragHandle}`,
+      dragHandle: '.dragHandle',
     },
   ],
   edges: [],
@@ -48,11 +41,6 @@ const useStore = create<RFState>((set, get) => ({
   onEdgesChange: (changes: EdgeChange[]) => {
     set({
       edges: applyEdgeChanges(changes, get().edges),
-    });
-  },
-  onConnect: (connection: Connection) => {
-    set({
-      edges: addEdge(connection, get().edges),
     });
   },
   updateNodeLabel: (nodeId: string, label: string) => {
@@ -73,19 +61,19 @@ const useStore = create<RFState>((set, get) => ({
     }
 
     const newNode = {
-      id: nanoid(),
+      id: getId(),
       type: 'mindmap',
       data: { label: 'New Node' },
       position: {
         x: position.x - parentNode.positionAbsolute!.x + parentNode.width! / 2,
         y: position.y - parentNode.positionAbsolute!.y + parentNode.height! / 2,
       },
-      dragHandle: `.${style.dragHandle}`,
+      dragHandle: '.dragHandle',
       parentNode: parentNode.id,
     };
 
     const newEdge = {
-      id: nanoid(),
+      id: getId(),
       source: parentNode.id,
       target: newNode.id,
     };
@@ -98,3 +86,11 @@ const useStore = create<RFState>((set, get) => ({
 }));
 
 export default useStore;
+
+// utils
+
+let id = 0;
+
+function getId() {
+  return `rf:${id++}`;
+}
