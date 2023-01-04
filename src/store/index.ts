@@ -1,4 +1,3 @@
-import create from 'zustand';
 import {
   Connection,
   Edge,
@@ -13,6 +12,7 @@ import {
   applyEdgeChanges,
   XYPosition,
 } from 'reactflow';
+import create from 'zustand';
 import { nanoid } from 'nanoid/non-secure';
 
 import { NodeData } from '../Flow/MindMapNode';
@@ -29,16 +29,14 @@ export type RFState = {
   addChildNode: (parentNode: Node | null, position: XYPosition) => void;
 };
 
-// this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<RFState>((set, get) => ({
   nodes: [
     {
-      id: '1',
+      id: 'root',
       type: 'mindmap',
       data: { label: 'React Flow Mindmap 1' },
       position: { x: 0, y: 0 },
       dragHandle: `.${style.dragHandle}`,
-      zIndex: 1,
     },
   ],
   edges: [],
@@ -84,7 +82,6 @@ const useStore = create<RFState>((set, get) => ({
       },
       dragHandle: `.${style.dragHandle}`,
       parentNode: parentNode.id,
-      zIndex: 1,
     };
 
     const newEdge = {

@@ -60,9 +60,16 @@ function Flow() {
       const targetIsPane = (event.target as Element).classList.contains(
         'react-flow__pane'
       );
+      const node = (event.target as Element).closest('.react-flow__node');
+
+      if (node) {
+        node.querySelector('input')?.focus({ preventScroll: true });
+
+        return;
+      }
 
       if (targetIsPane && domNode && connectingNodeId.current) {
-        // we need to remove the wrapper bounds, in order to get the correct position
+        // we need to remove the outer pane bounds, in order to get the correct position
         const { top, left } = domNode.getBoundingClientRect();
         const parentNode = nodeInternals.get(connectingNodeId.current) || null;
 

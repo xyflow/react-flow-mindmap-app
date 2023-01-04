@@ -33,15 +33,21 @@
   height: 20px;
   z-index: 10;
   position: relative;
+  pointer-events: none;
+}
+
+.inputWrapper.inputFocused {
+  pointer-events: all;
 }
 
 .dragHandle {
   background: transparent;
-  width: 10px;
+  width: 14px;
   height: 100%;
   margin-right: 4px;
   display: flex;
   align-items: center;
+  pointer-events: all;
 }
 
 .input {

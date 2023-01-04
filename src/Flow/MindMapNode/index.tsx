@@ -1,15 +1,18 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
+import cc from 'classcat';
 
 import useStore from '../../store';
 
 import style from './style.module.css';
+import DragIcon from './DragIcon';
 
 export type NodeData = {
   label: string;
 };
 
 function MindMapNode({ id, data }: NodeProps<NodeData>) {
+  const [inputFocused, setInputFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const updateNodeLabel = useStore((state) => state.updateNodeLabel);
 
@@ -21,26 +24,26 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
 
   useLayoutEffect(() => {
     if (inputRef.current) {
-      inputRef.current.style.width = data.label.length * 8 + 'px';
+      inputRef.current.style.width = `${data.label.length * 8}px`;
     }
   }, [data.label.length]);
 
   return (
     <>
-      <div className={style.inputWrapper}>
+      <div
+        className={cc([
+          style.inputWrapper,
+          { [style.inputFocused]: inputFocused },
+        ])}
+      >
         <div className={style.dragHandle}>
-          <svg viewBox="0 0 24 24">
-            <path
-              fill="none"
-              stroke="#000"
-              strokeWidth="1"
-              d="M15 5h2V3h-2v2zM7 5h2V3H7v2zm8 8h2v-2h-2v2zm-8 0h2v-2H7v2zm8 8h2v-2h-2v2zm-8 0h2v-2H7v2z"
-            />
-          </svg>
+          <DragIcon />
         </div>
         <input
           defaultValue={data.label}
           onChange={(evt) => updateNodeLabel(id, evt.target.value)}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => setInputFocused(false)}
           className={style.input}
           ref={inputRef}
         />
