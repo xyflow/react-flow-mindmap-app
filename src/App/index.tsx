@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react';
 import ReactFlow, {
   ConnectionLineType,
   NodeOrigin,
+  Node,
   OnConnectEnd,
   OnConnectStart,
   useReactFlow,
@@ -15,6 +16,7 @@ import useStore, { RFState } from './store';
 import MindMapNode from './MindMapNode';
 import MindMapEdge from './MindMapEdge';
 
+// we need to import the React Flow styles to make it work
 import 'reactflow/dist/style.css';
 
 const selector = (state: RFState) => ({
@@ -47,13 +49,43 @@ function Flow() {
   const { project } = useReactFlow();
   const connectingNodeId = useRef<string | null>(null);
 
+  const getChildNodePosition = (event: MouseEvent, parentNode?: Node) => {
+    const { domNode } = store.getState();
+
+    if (
+      !domNode ||
+      // we need to check if these properites exist, because when a node is not initialized yet,
+      // it doesn't have a positionAbsolute nor a width or height
+      !parentNode?.positionAbsolute ||
+      !parentNode?.width ||
+      !parentNode?.height
+    ) {
+      return;
+    }
+
+    const { top, left } = domNode.getBoundingClientRect();
+
+    // we need to remove the wrapper bounds, in order to get the correct mouse position
+    const panePosition = project({
+      x: event.clientX - left,
+      y: event.clientY - top,
+    });
+
+    // we are calculating with positionAbsolute here because child nodes are positioned relative to their parent
+    return {
+      x: panePosition.x - parentNode.positionAbsolute.x + parentNode.width / 2,
+      y: panePosition.y - parentNode.positionAbsolute.y + parentNode.height / 2,
+    };
+  };
+
   const onConnectStart: OnConnectStart = useCallback((_, { nodeId }) => {
+    // we need to remember where the connection started so we can add the new node to the correct parent on connect end
     connectingNodeId.current = nodeId;
   }, []);
 
   const onConnectEnd: OnConnectEnd = useCallback(
     (event) => {
-      const { domNode, nodeInternals } = store.getState();
+      const { nodeInternals } = store.getState();
       const targetIsPane = (event.target as Element).classList.contains(
         'react-flow__pane'
       );
@@ -61,25 +93,16 @@ function Flow() {
 
       if (node) {
         node.querySelector('input')?.focus({ preventScroll: true });
+      } else if (targetIsPane && connectingNodeId.current) {
+        const parentNode = nodeInternals.get(connectingNodeId.current);
+        const childNodePosition = getChildNodePosition(event, parentNode);
 
-        return;
-      }
-
-      if (targetIsPane && domNode && connectingNodeId.current) {
-        // we need to remove the outer pane bounds, in order to get the correct position
-        const { top, left } = domNode.getBoundingClientRect();
-        const parentNode = nodeInternals.get(connectingNodeId.current) || null;
-
-        addChildNode(
-          parentNode,
-          project({
-            x: event.clientX - left,
-            y: event.clientY - top,
-          })
-        );
+        if (parentNode && childNodePosition) {
+          addChildNode(parentNode, childNodePosition);
+        }
       }
     },
-    [project]
+    [getChildNodePosition]
   );
 
   return (

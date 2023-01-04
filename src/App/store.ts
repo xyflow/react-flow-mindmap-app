@@ -10,6 +10,7 @@ import {
   XYPosition,
 } from 'reactflow';
 import create from 'zustand';
+import { nanoid } from 'nanoid/non-secure';
 
 import { NodeData } from './MindMapNode';
 
@@ -19,7 +20,7 @@ export type RFState = {
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   updateNodeLabel: (nodeId: string, label: string) => void;
-  addChildNode: (parentNode: Node | null, position: XYPosition) => void;
+  addChildNode: (parentNode: Node, position: XYPosition) => void;
 };
 
 const useStore = create<RFState>((set, get) => ({
@@ -55,25 +56,18 @@ const useStore = create<RFState>((set, get) => ({
       }),
     });
   },
-  addChildNode: (parentNode: Node | null, position: XYPosition) => {
-    if (!parentNode) {
-      return;
-    }
-
+  addChildNode: (parentNode: Node, position: XYPosition) => {
     const newNode = {
-      id: getId(),
+      id: nanoid(),
       type: 'mindmap',
       data: { label: 'New Node' },
-      position: {
-        x: position.x - parentNode.positionAbsolute!.x + parentNode.width! / 2,
-        y: position.y - parentNode.positionAbsolute!.y + parentNode.height! / 2,
-      },
+      position,
       dragHandle: '.dragHandle',
       parentNode: parentNode.id,
     };
 
     const newEdge = {
-      id: getId(),
+      id: nanoid(),
       source: parentNode.id,
       target: newNode.id,
     };
@@ -86,11 +80,3 @@ const useStore = create<RFState>((set, get) => ({
 }));
 
 export default useStore;
-
-// utils
-
-let id = 0;
-
-function getId() {
-  return `rf:${id++}`;
-}
