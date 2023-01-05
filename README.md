@@ -2,9 +2,11 @@
 
 This mind map app was created as an example for the blog post ["Let's build a mind map app with React Flow"](https://reactflow.dev/blog/mind-map-app-with-react-flow/).
 
+Demo: https://react-flow-mindmap.netlify.app
+
 ## Development
 
-We are using Vite for the development.
+We are using [Vite])(https://vitejs.dev/) for the development.
 
 ### Installation
 
