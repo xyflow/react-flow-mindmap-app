@@ -2,6 +2,8 @@
 
 This mind map app was created as an example for the blog post ["Let's build a mind map app with React Flow"](https://reactflow.dev/blog/mind-map-app-with-react-flow/).
 
+![mindmap](https://user-images.githubusercontent.com/2857535/210797861-510f0a3d-fd67-46a7-8a8d-c409cb7dbcdb.png)
+
 Demo: https://react-flow-mindmap.netlify.app
 
 ## Development
