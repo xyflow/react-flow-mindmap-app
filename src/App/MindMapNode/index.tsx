@@ -16,9 +16,9 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
   const updateNodeLabel = useStore((state) => state.updateNodeLabel);
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus({ preventScroll: true });
-    }
+    setTimeout(() => {
+      inputRef.current?.focus({ preventScroll: true });
+    }, 1);
   }, []);
 
   useLayoutEffect(() => {
