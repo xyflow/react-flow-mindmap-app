@@ -1,6 +1,5 @@
-import { useLayoutEffect, useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useEffect, useRef } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
-import cc from 'classcat';
 
 import useStore from '../store';
 
@@ -11,7 +10,6 @@ export type NodeData = {
 };
 
 function MindMapNode({ id, data }: NodeProps<NodeData>) {
-  const [inputFocused, setInputFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const updateNodeLabel = useStore((state) => state.updateNodeLabel);
 
@@ -29,15 +27,13 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
 
   return (
     <>
-      <div className={cc(['inputWrapper', { inputFocused: inputFocused }])}>
+      <div className="inputWrapper">
         <div className="dragHandle">
           <DragIcon />
         </div>
         <input
-          defaultValue={data.label}
+          value={data.label}
           onChange={(evt) => updateNodeLabel(id, evt.target.value)}
-          onFocus={() => setInputFocused(true)}
-          onBlur={() => setInputFocused(false)}
           className="input"
           ref={inputRef}
         />

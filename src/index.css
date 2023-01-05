@@ -54,10 +54,6 @@ body,
   pointer-events: none;
 }
 
-.inputWrapper.inputFocused {
-  pointer-events: all;
-}
-
 .dragHandle {
   background: transparent;
   width: 14px;
@@ -76,10 +72,12 @@ body,
   background: transparent;
   height: 100%;
   color: #222;
+  pointer-events: none;
 }
 
 .input:focus {
   border: none;
   outline: none;
   background: rgba(255, 255, 255, 0.25);
+  pointer-events: all;
 }

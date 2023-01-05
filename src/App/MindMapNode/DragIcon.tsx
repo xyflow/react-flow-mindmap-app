@@ -1,3 +1,5 @@
+// icon taken from grommet https://icons.grommet.io
+
 function DragIcon() {
   return (
     <svg viewBox="0 0 24 24">
