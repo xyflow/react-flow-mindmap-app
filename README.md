@@ -8,7 +8,7 @@ Demo: https://react-flow-mindmap.netlify.app
 
 ## Development
 
-We are using [Vite])(https://vitejs.dev/) for the development.
+We are using [Vite](https://vitejs.dev/) for the development.
 
 ### Installation
 
