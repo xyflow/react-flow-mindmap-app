@@ -4,12 +4,12 @@
 
 This mind map app was created as an example for the blog post ["Tutorial: Build a Mind Map App with React Flow"](https://reactflow.dev/blog/mind-map-app-with-react-flow/), which has a step-by-step guide on how to build a this mindmap (for intermediate or advanced React users). [React Flow](https://reactflow.dev) is a library for creating node-based UIs.
 
-Features of the mindmap include
+### Features of the mindmap include
 - Quickly create new nodes on drag + mouse-release
 - Organize nodes by moving child notes with their parent
 - Edit text in nodes
 
-The tutorial covers React Flow topics including
+### The tutorial covers React Flow topics including
 - Using Zustand for state management
 - Custom node with an input field
 - Using node area as a handle
