@@ -1,4 +1,4 @@
-import { BaseEdge, EdgeProps, getStraightPath } from 'reactflow';
+import { BaseEdge, EdgeProps, getStraightPath } from '@xyflow/react';
 
 function MindMapEdge(props: EdgeProps) {
   const { sourceX, sourceY, targetX, targetY } = props;
@@ -10,7 +10,7 @@ function MindMapEdge(props: EdgeProps) {
     targetY,
   });
 
-  return <BaseEdge path={edgePath} {...props} />;
+  return <BaseEdge path={edgePath} style={props.style} />;
 }
 
 export default MindMapEdge;

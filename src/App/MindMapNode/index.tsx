@@ -1,15 +1,11 @@
 import { useLayoutEffect, useEffect, useRef } from 'react';
-import { Handle, NodeProps, Position } from 'reactflow';
+import { Handle, NodeProps, Position } from '@xyflow/react';
 
 import useStore from '../store';
-
 import DragIcon from './DragIcon';
+import { type MindMapNode } from '../types';
 
-export type NodeData = {
-  label: string;
-};
-
-function MindMapNode({ id, data }: NodeProps<NodeData>) {
+function MindMapNode({ id, data }: NodeProps<MindMapNode>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const updateNodeLabel = useStore((state) => state.updateNodeLabel);
 
@@ -34,7 +30,7 @@ function MindMapNode({ id, data }: NodeProps<NodeData>) {
         <input
           value={data.label}
           onChange={(evt) => updateNodeLabel(id, evt.target.value)}
-          className="input"
+          className="input nodrag"
           ref={inputRef}
         />
       </div>

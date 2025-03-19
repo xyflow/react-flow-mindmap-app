@@ -1,26 +1,26 @@
 import {
   Edge,
   EdgeChange,
-  Node,
   NodeChange,
   OnNodesChange,
   OnEdgesChange,
   applyNodeChanges,
   applyEdgeChanges,
   XYPosition,
-} from 'reactflow';
-import create from 'zustand';
+  InternalNode,
+} from '@xyflow/react';
+import { create } from 'zustand';
 import { nanoid } from 'nanoid/non-secure';
 
-import { NodeData } from './MindMapNode';
+import { MindMapNode } from './types';
 
 export type RFState = {
-  nodes: Node<NodeData>[];
+  nodes: MindMapNode[];
   edges: Edge[];
-  onNodesChange: OnNodesChange;
+  onNodesChange: OnNodesChange<MindMapNode>;
   onEdgesChange: OnEdgesChange;
   updateNodeLabel: (nodeId: string, label: string) => void;
-  addChildNode: (parentNode: Node, position: XYPosition) => void;
+  addChildNode: (parentNode: InternalNode, position: XYPosition) => void;
 };
 
 const useStore = create<RFState>((set, get) => ({
@@ -34,9 +34,9 @@ const useStore = create<RFState>((set, get) => ({
     },
   ],
   edges: [],
-  onNodesChange: (changes: NodeChange[]) => {
+  onNodesChange: (changes: NodeChange<MindMapNode>[]) => {
     set({
-      nodes: applyNodeChanges(changes, get().nodes),
+      nodes: applyNodeChanges<MindMapNode>(changes, get().nodes),
     });
   },
   onEdgesChange: (changes: EdgeChange[]) => {
@@ -48,22 +48,25 @@ const useStore = create<RFState>((set, get) => ({
     set({
       nodes: get().nodes.map((node) => {
         if (node.id === nodeId) {
-          // it's important to create a new object here, to inform React Flow about the changes
-          node.data = { ...node.data, label };
+          // it's important to create a new node here, to inform React Flow about the changes
+          return {
+            ...node,
+            data: { ...node.data, label },
+          };
         }
 
         return node;
       }),
     });
   },
-  addChildNode: (parentNode: Node, position: XYPosition) => {
-    const newNode = {
+  addChildNode: (parentNode: InternalNode, position: XYPosition) => {
+    const newNode: MindMapNode = {
       id: nanoid(),
       type: 'mindmap',
       data: { label: 'New Node' },
       position,
       dragHandle: '.dragHandle',
-      parentNode: parentNode.id,
+      parentId: parentNode.id,
     };
 
     const newEdge = {

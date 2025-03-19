@@ -9,13 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@xyflow/react": "^12.4.4",
     "d3-force": "^3.0.0",
     "d3-hierarchy": "^3.1.2",
     "d3-quadtree": "^3.0.1",
     "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "reactflow": "^11.4.1",
     "zustand": "^4.2.0"
   },
   "devDependencies": {
